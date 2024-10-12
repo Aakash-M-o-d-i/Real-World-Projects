@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 public class AddNewPackage {
 
     public static void addNewPackage() throws SQLException {
@@ -81,16 +82,8 @@ public class AddNewPackage {
             e.printStackTrace();
         }
 
-        sc.close();  // Close the Scanner when done
-
-
-
         // Store Package Data in Database.
-        String url = "jdbc:mysql://localhost:3306/logisticSys";
-        String userName = "root";
-        String password = "1111";
-
-        try (Connection con = DriverManager.getConnection(url, userName, password)) {
+        try (Connection con = ConnectionMySql.getConnection()) {
             // Generate Unique Package ID
             String uniqueID = generateSecureId();
 
@@ -122,28 +115,14 @@ public class AddNewPackage {
         // display store package data
 
 
-//
-//        System.out.printf("""
-//                # Package Details:
-//                1. Package Weight: %f
-//                2. Package Dimensions (Length, Width, Height): %d, %d, %d
-//                3. Package Description (optional): %s
-//                """,packageWeight,length,width,height,packageDesc);
-//
-//        System.out.printf("""
-//                # Shipping Details:
-//                1. Delivery Type (Standard/Express): %s
-//                2. Origin Location: %s
-//                3. Destination Location: %s
-//                4. Expected Delivery Date: %s
-//                """,shippingType,shippingOrgLocation,shippingDesLocation,shippingDate);
 
         // Display Confirmation Message
 //        System.out.println("Package has been successfully added.");
 //        System.out.println("Package ID: "+ uniqueID);
     }
 
-    // Method to insert either Sender or Receiver
+    // Method to insert both Sender or Receiver.
+    // Database store. Error ?
     private static void insertEntity(Connection con, String id, String entityType, String name, String address, String phoneNumber, String email) throws SQLException {
         String sql = String.format("INSERT INTO %s (%s_ID, %s_Name, %s_Address, %s_Phone_No, %s_Email_Id) VALUES (?, ?, ?, ?,?);",
                 entityType, entityType, entityType, entityType, entityType,entityType);
@@ -160,9 +139,12 @@ public class AddNewPackage {
                 System.out.printf("%s Added successfully.\n", entityType);
             }
         }
+        catch (Exception e){
+            System.out.println("Please, check you details.");
+        }
     }
 
-    // Method to fetch and display details based on phone number
+    // Method to fetch and display details based on phone number.
     private static void fetchAndDisplayEntity(Connection con, String entityType, String phoneColumn, String phoneNumber) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE %s = ?", entityType, phoneColumn);
 
@@ -187,9 +169,10 @@ public class AddNewPackage {
         }
     }
 
-    // Package Insert with same Sender_ID and Receiver_ID
+    // Insert package details into the mysql database.
+    // Package Insert with same Sender_ID and Receiver_ID.
     private static void packageInsert(Connection con, String senderId, String receiverId, float packageWeight, String l, String w, String h, String packageDesc, String shippingType, String shippingOrgLocation, String shippingDesLocation, String shippingDate) throws SQLException {
-        String sql = "INSERT INTO Package (Sender_ID, Receiver_ID, Package_ID, Package_Weight, Package_Dimensions, Package_Description, Delivery_Type, Origin_Location, Destination_Location, Expected_Delivery_Date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO Package (Sender_ID, Receiver_ID, Package_ID, Package_Weight, Package_Dimensions, Package_Description, Delivery_Type, Origin_Location, Destination_Location, Expected_Delivery_Date, Current_Status, Current_Location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Shipped', 'Warehouse A')";
 
         String formattedDate = convertDateToMySQLFormat(shippingDate);
         try (PreparedStatement preparedStatement = con.prepareStatement(sql)) {
@@ -211,7 +194,7 @@ public class AddNewPackage {
         }
     }
 
-    // Package fetch and display
+    // Package fetch and display with the help of SenderId and ReceiverId.
     private static void fetchAndDisplayPackage(Connection con, String senderId, String receiverId) throws SQLException {
         String sql = "SELECT * FROM Package WHERE Sender_ID = ? AND Receiver_ID = ?";
 
@@ -243,17 +226,21 @@ public class AddNewPackage {
                         9. Destination Location: %s
                         10. Expected Delivery Date: %s
                         """, packageId, senderId, receiverId, packageWeight, packageDimensions, packageDesc, deliveryType, originLocation, destinationLocation, expectedDate);
+
+
+                System.out.println("Please, NOTE down your Package ID: "+packageId);
             }
         }
     }
 
     // Method for generate unique ID for sender,receiver,package
-    private static String generateSecureId() {
+    // That help to identify the package owner and customer.
+    public static String generateSecureId() {
         SecureRandom random = new SecureRandom();
         return new java.math.BigInteger(40, random).toString(32);  // Secure random ID
     }
 
-    // Method to convert date from DD/MM/YYYY or MM/DD/YYYY to YYYY-MM-DD
+    // Method to convert date from DD/MM/YYYY or MM/DD/YYYY to YYYY-MM-DD for storing data into the "MYSQL".
     private static String convertDateToMySQLFormat(String date) {
         SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");  // Change format to "MM/dd/yyyy" if needed
         SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
