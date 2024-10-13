@@ -4,21 +4,36 @@ import java.util.Scanner;
 
 import static Method.AddNewPackage.addNewPackage;
 import static Method.TrackPackage.trackPackage;
+import static Method.UpdatePackageStatus.updatePackageStatus;
 
 public class Menu {
     static public void menu() throws SQLException {
+        String reset = "\033[0m";  // Resets color to default
+        String red = "\033[31m";
+        String green = "\033[32m";
+        String yellow = "\033[33m";
+        String magenta = "\033[35m";
+        String cyan = "\033[36m";
+
         String input = """
         Select Option
-        1. Add New Package
-        2. Track Package
-        3. Update Package Status
-        4. View Package History
-        5. Exit
+        1. %s Add New Package %s
+        2. %s Track Package %s
+        3. %s Update Package Status %s
+        4. %s View Package History %s
+        5. %s Exit %s
         └─>""";
+        String formattedInput = String.format(input,
+                green, reset,  // 1. Add New Package
+                cyan, reset,   // 2. Track Package
+                yellow, reset, // 3. Update Package Status
+                magenta, reset,   // 4. View Package History
+                red, reset     // 5. Exit
+        );
         Scanner sc = new Scanner(System.in);
         int user;
         while (true) {
-            System.out.print(input+" ");
+            System.out.print(formattedInput);
             // Check if the user input is an integer
             if (sc.hasNextInt()) {
                 user = sc.nextInt();
@@ -61,6 +76,4 @@ public class Menu {
     private static void viewPackageHistory() {
     }
 
-    private static void updatePackageStatus() {
-    }
 }

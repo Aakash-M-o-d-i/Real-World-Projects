@@ -53,28 +53,44 @@ public class Testing {
 //    static public void db(){
 //
 //    }
-    static public void swap(int[] arr, int i, int j){
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-    }
-    public static void main(String[] args) {
-        int[] arr = {10,9,5,6,8,4,3};
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = i+1; j < arr.length; j++) {
-                if(arr[i] > arr[j]){
-                    swap(arr,i,j);
-            }
-        }
-//        int i = 0; int j = i+1;
-//        while (i > j){
-//            if (arr[i] > arr[j]) {
-//                swap(arr, i, j);
-//                i++;
-//                j++;
+//    static public void swap(int[] arr, int i, int j){
+//        int temp = arr[i];
+//        arr[i] = arr[j];
+//        arr[j] = temp;
+//    }
+//    public static void main(String[] args) {
+//        int[] arr = {10,9,5,6,8,4,3};
+//        for (int i = 0; i < arr.length; i++) {
+//            for (int j = i+1; j < arr.length; j++) {
+//                if(arr[i] > arr[j]){
+//                    swap(arr,i,j);
 //            }
-        }
-        System.out.println(Arrays.toString(arr));
-    }
+//        }
+////        int i = 0; int j = i+1;
+////        while (i > j){
+////            if (arr[i] > arr[j]) {
+////                swap(arr, i, j);
+////                i++;
+////                j++;
+////            }
+//        }
+//        System.out.println(Arrays.toString(arr));
 
+    public static void main(String[] args) {
+        String reset = "\033[0m";  // Resets color to default
+        String red = "\033[31m";
+        String green = "\033[32m";
+        String yellow = "\033[33m";
+        String blue = "\033[34m";
+        String magenta = "\033[35m";
+        String cyan = "\033[36m";
+
+        // Print colored output
+        System.out.println(red + "This text is red!" + reset);
+        System.out.println(green + "This text is green!" + reset);
+        System.out.println(yellow + "This text is yellow!" + reset);
+        System.out.println(blue + "This text is blue!" + reset);
+        System.out.println(magenta + "This text is magenta!" + reset);
+        System.out.println(cyan + "This text is cyan!" + reset);
+    }
 }
