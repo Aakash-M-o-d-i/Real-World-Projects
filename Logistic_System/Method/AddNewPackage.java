@@ -2,6 +2,7 @@ package Method;
 
 import java.security.SecureRandom;
 import java.sql.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import java.text.ParseException;
@@ -14,56 +15,57 @@ public class AddNewPackage {
     public static void addNewPackage() throws SQLException {
         Scanner sc = new Scanner(System.in);
 
-        // Sender Information
-        System.out.println("Enter Sender Information:");
-        System.out.println("1. Sender Name: ");
-        String nameSen = sc.nextLine();
-        System.out.println("2. Sender Address: ");
-        String addrSen = sc.nextLine();
-        System.out.println("Sender Contact Info:");
-        System.out.println("1.1. Phone Number: ");
-        String phoneNoSen = sc.nextLine();
-        System.out.println("1.2. Email ID: ");
-        String emailIdSen = sc.nextLine();
+            // Sender Information
+            System.out.println("Enter Sender Information:");
+            System.out.println("1. Sender Name: ");
+            String nameSen = sc.nextLine();
+            System.out.println("2. Sender Address: ");
+            String addrSen = sc.nextLine();
+            // Validate Sender Phone Number
+            String phoneNoSen = getValidatedPhoneNumber(sc, "Sender");
+            // Validate Sender Email
+            String emailIdSen = getValidatedEmail(sc, "Sender");
+    
+            // Receiver Information
+            System.out.println("Enter Receiver Information:");
+            System.out.println("1. Receiver Name: ");
+            String nameRec = sc.nextLine();
+            System.out.println("2. Receiver Address");
+            String addrRec = sc.nextLine();
+            // Validate Receiver Phone Number
+            String phoneNoRec = getValidatedPhoneNumber(sc, "Receiver");
+            // Validate Receiver Email
+            String emailIdRec = getValidatedEmail(sc, "Receiver");
+    
+            // Package details and shipping details in one table
+            // Package Details
+            System.out.println("Enter Package Details: ");
+            // Validate Package Weight
+            float packageWeight = getValidatedFloatInput(sc, "Package Weight");
+            sc.nextLine();  // Consume newline after float input
 
-        // Receiver Information
-        System.out.println("Enter Receiver Information:");
-        System.out.println("1. Receiver Name: ");
-        String nameRec = sc.nextLine();
-        System.out.println("2. Receiver Address");
-        String addrRec = sc.nextLine();
-        System.out.println("Receiver Contact Info:");
-        System.out.println("1.1. Phone Number: ");
-        String phoneNoRec = sc.nextLine();
-        System.out.println("1.2. Email ID: ");
-        String emailIdRec = sc.nextLine();
-
-        // Package details and shipping details in one table
-        // Package Details
-        System.out.println("Enter Package Details: ");
-        System.out.println("1. Package Weight");
-        float packageWeight = sc.nextFloat();
-        sc.nextLine();  // Consume newline after float input
-        System.out.println("2. Package Dimensions (Length, Width, Height)"); // to calculate package dimension use l*w*h/139
-        System.out.println("Length: ");
-        String length = sc.nextLine();
-        System.out.println("Width: ");
-        String width = sc.nextLine();
-        System.out.println("Height: ");
-        String height = sc.nextLine();
-        System.out.println("3. Package Description (optional)");
-        String packageDesc = sc.nextLine();
-        // Shipping Details
-        System.out.println("Enter Shipping Details:");
-        System.out.println("1. Delivery Type (Standard/Express)");
-        String shippingType = sc.next();
-        sc.nextLine();  // Consume newline after next()
-        System.out.println("2. Origin Location");
-        String shippingOrgLocation = sc.nextLine();
-        System.out.println("3. Destination Location");
-        String shippingDesLocation = sc.nextLine();
-        System.out.println("4. Expected Delivery Date (DD/MM/YYYY)");
-        String shippingDate = sc.nextLine();  // For a date, store as a String for now
+            // Validate Package Dimensions
+            System.out.println("2. Package Dimensions (Length, Width, Height)");
+            System.out.println("Length: ");
+            String length = getValidatedDimension(sc, "Length");
+            System.out.println("Width: ");
+            String width = getValidatedDimension(sc, "Width");
+            System.out.println("Height: ");
+            String height = getValidatedDimension(sc, "Height");
+        
+            System.out.println("3. Package Description (optional)");
+            String packageDesc = sc.nextLine();
+            // Shipping Details
+            System.out.println("Enter Shipping Details:");
+            System.out.println("1. Delivery Type (Standard/Express)");
+            String shippingType = sc.next();
+            sc.nextLine();  // Consume newline after next()
+            System.out.println("2. Origin Location");
+            String shippingOrgLocation = sc.nextLine();
+            System.out.println("3. Destination Location");
+            String shippingDesLocation = sc.nextLine();
+            System.out.println("4. Expected Delivery Date (DD/MM/YYYY)");
+            String shippingDate = sc.nextLine();
 
         // for clean view of input information
         try {
@@ -119,6 +121,67 @@ public class AddNewPackage {
         // Display Confirmation Message
 //        System.out.println("Package has been successfully added.");
 //        System.out.println("Package ID: "+ uniqueID);
+    }
+    // Handle the invalid Package Dimension entered by Client or user. Validate Package Dimension (Must be numeric and positive)
+    private static String getValidatedDimension(Scanner sc, String dimensionType) {
+        String dimension;
+        while (true) {
+            System.out.printf("Enter %s: ", dimensionType);
+            dimension = sc.nextLine();
+
+            // Check if the dimension is a positive number
+            if (dimension.matches("\\d+(\\.\\d+)?") && Float.parseFloat(dimension) > 0) {
+                return dimension;  // Return valid dimension
+            } else {
+                System.out.println("Invalid dimension. Please enter a positive number.");
+            }
+        }
+    }
+
+    // Handle the invalid Package weight entered by Client or user. Validate Floating
+    private static float getValidatedFloatInput(Scanner sc, String fieldName) {
+        while (true) {
+            System.out.printf("Enter %s: ", fieldName);
+            try {
+                return sc.nextFloat();  // Return valid float input
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                sc.next();  // Clear the invalid input from scanner buffer
+            }
+        }
+    }
+
+    // Handle the invalid E-mail entered by sender and receiver. Validate Email Address (Must contain .com)
+    private static String getValidatedEmail(Scanner sc, String entityType) {
+        String email;
+        while (true) {
+            System.out.printf("%s Email ID: ", entityType);
+            email = sc.nextLine();
+
+            // Validate phone number length and digits
+            if (email.contains(".com") && email.contains("@")) {
+                return email;  // Return valid phone number
+            } else {
+                System.out.println("Invalid email. Please enter a valid email with '.com'.");
+            }
+        }
+    }
+
+    // Handle the invalid phone number entered by sender and receiver. Validate Phone Number (Must be 10 digits)
+    private static String getValidatedPhoneNumber(Scanner sc, String entityType) {
+        String phoneNumber;
+        while (true) {
+            System.out.printf("%s Contact Info:\n", entityType);
+            System.out.println("Phone Number (10 digits): ");
+            phoneNumber = sc.nextLine();
+
+            // Validate phone number length and digits
+            if (phoneNumber.matches("\\d{10}")) {
+                return phoneNumber;  // Return valid phone number
+            } else {
+                System.out.println("Invalid phone number. Please enter exactly 10 digits.");
+            }
+        }
     }
 
     // Method to insert both Sender or Receiver.

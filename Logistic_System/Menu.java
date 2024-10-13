@@ -5,6 +5,7 @@ import java.util.Scanner;
 import static Method.AddNewPackage.addNewPackage;
 import static Method.TrackPackage.trackPackage;
 import static Method.UpdatePackageStatus.updatePackageStatus;
+import static Method.ViewPackageHistory.viewPackageHistory;
 
 public class Menu {
     static public void menu() throws SQLException {
@@ -72,8 +73,4 @@ public class Menu {
 
     private static void Exit() {
     }
-
-    private static void viewPackageHistory() {
-    }
-
 }
