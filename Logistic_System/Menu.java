@@ -9,6 +9,22 @@ import static Method.ViewPackageHistory.viewPackageHistory;
 
 public class Menu {
     static public void menu() throws SQLException {
+        // for clean view of input information
+        try {
+            // Check the operating system
+            ProcessBuilder processBuilder;
+            if (System.getProperty("os.name").contains("Windows")) {
+                // Windows OS - Run "cls" command
+                processBuilder = new ProcessBuilder("cmd", "/c", "cls");
+            } else {
+                // Unix-like OS (Linux, macOS) - Run "clear" command
+                processBuilder = new ProcessBuilder("clear");
+                processBuilder.environment().put("TERM", "xterm"); // Set TERM variable
+            }
+            processBuilder.inheritIO().start().waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String reset = "\033[0m";  // Resets color to default
         String red = "\033[31m";
         String green = "\033[32m";
@@ -18,12 +34,12 @@ public class Menu {
 
         String input = """
         Select Option
-        1. %s Add New Package %s
-        2. %s Track Package %s
-        3. %s Update Package Status %s
-        4. %s View Package History %s
-        5. %s Exit %s
-        └─>""";
+            1. %s Add New Package %s
+            2. %s Track Package %s
+            3. %s Update Package Status %s
+            4. %s View Package History %s
+            5. %s Exit %s
+            └─>""";
         String formattedInput = String.format(input,
                 green, reset,  // 1. Add New Package
                 cyan, reset,   // 2. Track Package
@@ -34,7 +50,7 @@ public class Menu {
         Scanner sc = new Scanner(System.in);
         int user;
         while (true) {
-            System.out.print(formattedInput);
+            System.out.print(formattedInput+" ");
             // Check if the user input is an integer
             if (sc.hasNextInt()) {
                 user = sc.nextInt();

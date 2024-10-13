@@ -88,20 +88,26 @@ This project connects to a **MySQL** database, where all package information, se
     ```bash
     cd logistic-system-cli
     ```
+4. **Download the mysql-connector-java For:**;
+    - **Linux**
+   - **Windows**
+       ```bash
+       https://dev.mysql.com/downloads/connector/j/
+      ```
 
-4. **Compile the Java files**:
+5. **Compile the Java files**:
 
     ```bash
     javac -cp .:mysql-connector-java-8.0.26.jar *.java
     ```
 
-5. **Run the CLI application**:
+6. **Run the CLI application**:
 
     ```bash
     java -cp .:mysql-connector-java-8.0.26.jar LogisticSystem
     ```
 
-6. **Configure the database connection** in the `DatabaseConnection.java` file:
+7. **Configure the database connection** in the `DatabaseConnection.java` file:
 
     ```java
     String DATABASE_URL = "jdbc:mysql://localhost:3306/logistic_system";
