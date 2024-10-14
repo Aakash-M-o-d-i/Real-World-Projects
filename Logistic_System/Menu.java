@@ -1,3 +1,6 @@
+import Method.ColorUtil;
+
+import java.awt.*;
 import java.security.SecureRandom;
 import java.sql.*;
 import java.util.Scanner;
@@ -25,12 +28,6 @@ public class Menu {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String reset = "\033[0m";  // Resets color to default
-        String red = "\033[31m";
-        String green = "\033[32m";
-        String yellow = "\033[33m";
-        String magenta = "\033[35m";
-        String cyan = "\033[36m";
 
         String input = """
         Select Option
@@ -41,11 +38,11 @@ public class Menu {
             5. %s Exit %s
             └─>""";
         String formattedInput = String.format(input,
-                green, reset,  // 1. Add New Package
-                cyan, reset,   // 2. Track Package
-                yellow, reset, // 3. Update Package Status
-                magenta, reset,   // 4. View Package History
-                red, reset     // 5. Exit
+                ColorUtil.GREEN, ColorUtil.RESET,   // 1. Add New Package
+                ColorUtil.CYAN, ColorUtil.RESET,    // 2. Track Package
+                ColorUtil.YELLOW, ColorUtil.RESET,  // 3. Update Package Status
+                ColorUtil.MAGENTA, ColorUtil.RESET, // 4. View Package History
+                ColorUtil.RED, ColorUtil.RESET      // 5. Exit
         );
         Scanner sc = new Scanner(System.in);
         int user;

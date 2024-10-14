@@ -11,19 +11,19 @@ public class UpdatePackageStatus {
         Scanner scanner = new Scanner(System.in);
 
         // Prompt for Package ID
-        System.out.println("Enter the Package ID to update: ");
+        System.out.println(ColorUtil.YELLOW+"Enter the Package ID to update: "+ColorUtil.RESET);
         String packageId = scanner.nextLine();
 
         // Validate Package ID (this step is assumed)
         if (!isValidPackageId(con, packageId)) {
-            System.out.println("Invalid Package ID. Please try again.");
+            System.out.println(ColorUtil.RED+"Invalid Package ID. Please try again."+ColorUtil.RESET);
             return;
         }
 
         // Prompt for new status and location
-        System.out.println("Enter new status (e.g., In Transit, Delivered): ");
+        System.out.println(ColorUtil.YELLOW+"Enter new status (e.g., In Transit, Delivered): "+ColorUtil.RESET);
         String newStatus = scanner.nextLine();
-        System.out.println("Enter new location: ");
+        System.out.println(ColorUtil.YELLOW+"Enter new location: "+ColorUtil.RESET);
         String newLocation = scanner.nextLine();
 
         // Update the current status and location in the Package table
@@ -37,7 +37,7 @@ public class UpdatePackageStatus {
             if (rowsAffected > 0) {
                 // Step 5: Log the update in the Package_History table
                 logPackageHistory(con, packageId, newStatus, newLocation);
-                System.out.println("Package status updated successfully.");
+                System.out.println(ColorUtil.GREEN+"Package status updated successfully."+ColorUtil.RESET);
             }
         }
     }

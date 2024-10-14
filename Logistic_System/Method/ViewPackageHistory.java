@@ -1,6 +1,7 @@
 package Method;
 
 import java.sql.*;
+import java.util.Locale;
 import java.util.Scanner;
 
 import static Method.UpdatePackageStatus.isValidPackageId;
@@ -12,18 +13,18 @@ public class ViewPackageHistory {
         Scanner scanner = new Scanner(System.in);
 
         // Prompt for Package ID
-        System.out.println("Enter the Package ID to view history: ");
+        System.out.println(ColorUtil.GREEN+"Enter the Package ID to view history: "+ColorUtil.RESET);
         String packageId = scanner.nextLine();
 
         // Validate Package ID (assuming the isValidPackageId method exists) 
         if (!isValidPackageId(con, packageId)) {
-            System.out.println("Invalid Package ID. Please try again.");
+            System.out.println(ColorUtil.RED+"Invalid Package ID. Please try again."+ColorUtil.RESET);
             return;
         }
         fetchLogPackageHistory(con,packageId); // using from UpdatePackageStatus
         // Ask the user if they want to view the current status
-        System.out.println("Would you like to view the current package status? (yes/no)");
-        String userInput = scanner.nextLine();
+        System.out.println(ColorUtil.YELLOW+"Would you like to view the current package status? (yes/no)"+ColorUtil.RESET);
+        String userInput = getValidated(scanner);
         if (userInput.equalsIgnoreCase("yes")) {
             viewCurrentStatus(con, packageId); // Fetch and display current status
         }
@@ -37,9 +38,9 @@ public class ViewPackageHistory {
                 if (rs.next()) {
                     String currentStatus = rs.getString("Current_Status");
                     String currentLocation = rs.getString("Current_Location");
-                    System.out.println("Current Status: " + currentStatus + ", \nCurrent Location: " + currentLocation);
+                    System.out.println(ColorUtil.CYAN+"Current Status: " + currentStatus + ", \nCurrent Location: " + currentLocation+ColorUtil.RESET);
                 } else {
-                    System.out.println("Package not found.");
+                    System.out.println(ColorUtil.RED+"Package not found."+ColorUtil.RESET);
                 }
             }
         }
@@ -51,7 +52,7 @@ public class ViewPackageHistory {
         preparedStatement.setString(1,packageId);
 
         ResultSet rsHistory = preparedStatement.executeQuery();
-        System.out.println("# Package History");
+        System.out.println(ColorUtil.GREEN+"# Package History"+ColorUtil.RESET);
         while (rsHistory.next()){
             // fetch details for database
             String status = rsHistory.getString("Status");
@@ -59,12 +60,26 @@ public class ViewPackageHistory {
             Timestamp timestamp = rsHistory.getTimestamp("Timestamp");
 
             // display package history details
-            System.out.printf("""
+            System.out.printf(ColorUtil.CYAN+"""
                     # Status: %s
                     # Location: %s
                     # Timestamp: %s
                     -----------------------------------------------------------------------------------------------------------
-                    """,status,location,timestamp);
+                    """+ColorUtil.RESET,status,location,timestamp);
+        }
+    }
+
+    public static String getValidated(Scanner sc){
+        String userInput;
+        while (true){
+            userInput = sc.nextLine();
+            String lowerCaseInput = userInput.toLowerCase();
+            if (lowerCaseInput.contains("yes") || lowerCaseInput.contains("no")){
+                return userInput;
+            } else {
+                System.out.println(ColorUtil.RED + "Invalid Input, please try again" + ColorUtil.RESET);
+                System.out.println(ColorUtil.YELLOW+"Would you like to view the current package status? (yes/no)"+ColorUtil.RESET);
+            }
         }
     }
 }

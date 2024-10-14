@@ -11,61 +11,57 @@ import java.util.Date;
 
 
 public class AddNewPackage {
-
     public static void addNewPackage() throws SQLException {
         Scanner sc = new Scanner(System.in);
 
-            // Sender Information
-            System.out.println("Enter Sender Information:");
-            System.out.println("1. Sender Name: ");
-            String nameSen = sc.nextLine();
-            System.out.println("2. Sender Address: ");
-            String addrSen = sc.nextLine();
-            // Validate Sender Phone Number
-            String phoneNoSen = getValidatedPhoneNumber(sc, "Sender");
-            // Validate Sender Email
-            String emailIdSen = getValidatedEmail(sc, "Sender");
-    
-            // Receiver Information
-            System.out.println("Enter Receiver Information:");
-            System.out.println("1. Receiver Name: ");
-            String nameRec = sc.nextLine();
-            System.out.println("2. Receiver Address");
-            String addrRec = sc.nextLine();
-            // Validate Receiver Phone Number
-            String phoneNoRec = getValidatedPhoneNumber(sc, "Receiver");
-            // Validate Receiver Email
-            String emailIdRec = getValidatedEmail(sc, "Receiver");
-    
-            // Package details and shipping details in one table
-            // Package Details
-            System.out.println("Enter Package Details: ");
-            // Validate Package Weight
-            float packageWeight = getValidatedFloatInput(sc, "Package Weight");
-            sc.nextLine();  // Consume newline after float input
+        // Sender Information
+        System.out.println(ColorUtil.GREEN + "Enter Sender Information:" + ColorUtil.RESET);
+        System.out.println(ColorUtil.GREEN + "1. Sender Name: " + ColorUtil.RESET);
+        String nameSen = sc.nextLine();
+        System.out.println(ColorUtil.GREEN + "2. Sender Address: " + ColorUtil.RESET);
+        String addrSen = sc.nextLine();
+        // Validate Sender Phone Number
+        String phoneNoSen = getValidatedPhoneNumber(sc, ColorUtil.GREEN + "Sender" + ColorUtil.RESET);
+        // Validate Sender Email
+        String emailIdSen = getValidatedEmail(sc, ColorUtil.GREEN + "Sender" + ColorUtil.RESET);
 
-            // Validate Package Dimensions
-            System.out.println("2. Package Dimensions (Length, Width, Height)");
-            System.out.println("Length: ");
-            String length = getValidatedDimension(sc, "Length");
-            System.out.println("Width: ");
-            String width = getValidatedDimension(sc, "Width");
-            System.out.println("Height: ");
-            String height = getValidatedDimension(sc, "Height");
-        
-            System.out.println("3. Package Description (optional)");
-            String packageDesc = sc.nextLine();
-            // Shipping Details
-            System.out.println("Enter Shipping Details:");
-            System.out.println("1. Delivery Type (Standard/Express)");
-            String shippingType = sc.next();
-            sc.nextLine();  // Consume newline after next()
-            System.out.println("2. Origin Location");
-            String shippingOrgLocation = sc.nextLine();
-            System.out.println("3. Destination Location");
-            String shippingDesLocation = sc.nextLine();
-            System.out.println("4. Expected Delivery Date (DD/MM/YYYY)");
-            String shippingDate = sc.nextLine();
+        // Receiver Information
+        System.out.println(ColorUtil.CYAN + "Enter Receiver Information:" + ColorUtil.RESET);
+        System.out.println(ColorUtil.CYAN + "1. Receiver Name: " + ColorUtil.RESET);
+        String nameRec = sc.nextLine();
+        System.out.println(ColorUtil.CYAN + "2. Receiver Address: " + ColorUtil.RESET);
+        String addrRec = sc.nextLine();
+        // Validate Receiver Phone Number
+        String phoneNoRec = getValidatedPhoneNumber(sc, ColorUtil.CYAN + "Receiver" + ColorUtil.RESET);
+        // Validate Receiver Email
+        String emailIdRec = getValidatedEmail(sc, ColorUtil.CYAN + "Receiver" + ColorUtil.RESET);
+
+        // Package Details
+        System.out.println(ColorUtil.YELLOW + "Enter Package Details: " + ColorUtil.RESET);
+        // Validate Package Weight
+        float packageWeight = getValidatedFloatInput(sc, ColorUtil.YELLOW + "Package Weight" + ColorUtil.RESET);
+        sc.nextLine();  // Consume newline after float input
+
+        // Validate Package Dimensions
+        System.out.println(ColorUtil.YELLOW + "2. Package Dimensions (Length, Width, Height):" + ColorUtil.RESET);
+        String length = getValidatedDimension(sc, ColorUtil.YELLOW + "Length" + ColorUtil.RESET);
+        String width = getValidatedDimension(sc, ColorUtil.YELLOW + "Width" + ColorUtil.RESET);
+        String height = getValidatedDimension(sc, ColorUtil.YELLOW + "Height" + ColorUtil.RESET);
+
+        System.out.println(ColorUtil.YELLOW + "3. Package Description (optional):" + ColorUtil.RESET);
+        String packageDesc = sc.nextLine();
+
+        // Shipping Details
+        System.out.println(ColorUtil.MAGENTA + "Enter Shipping Details: " + ColorUtil.RESET);
+        System.out.println(ColorUtil.MAGENTA + "1. Delivery Type (Standard/Express): " + ColorUtil.RESET);
+        String shippingType = sc.next();
+        sc.nextLine();  // Consume newline after next()
+        System.out.println(ColorUtil.MAGENTA + "2. Origin Location: " + ColorUtil.RESET);
+        String shippingOrgLocation = sc.nextLine();
+        System.out.println(ColorUtil.MAGENTA + "3. Destination Location: " + ColorUtil.RESET);
+        String shippingDesLocation = sc.nextLine();
+        System.out.println(ColorUtil.MAGENTA + "4. Expected Delivery Date (DD/MM/YYYY): " + ColorUtil.RESET);
+        String shippingDate = sc.nextLine();
 
         // for clean view of input information
         try {
@@ -109,9 +105,10 @@ public class AddNewPackage {
         // this for displaying details for 5 second
         try {
             // Sleep for 5 seconds (5,000 milliseconds)
-            System.out.println("5 second remaining to go back in Main Menu!");
+            System.out.println(ColorUtil.RED + "\n5 seconds remaining to go back to Main Menu!" + ColorUtil.RESET);
             Thread.sleep(5000);
         } catch (InterruptedException e) {
+            System.out.println(ColorUtil.RED + "Error: Unable to store data. Please try again." + ColorUtil.RESET);
             e.printStackTrace();
         }
         // display store package data
@@ -126,26 +123,24 @@ public class AddNewPackage {
     private static String getValidatedDimension(Scanner sc, String dimensionType) {
         String dimension;
         while (true) {
-            System.out.printf("Enter %s: ", dimensionType);
+            System.out.printf(ColorUtil.YELLOW + "Enter %s: " + ColorUtil.RESET, dimensionType);
             dimension = sc.nextLine();
 
             // Check if the dimension is a positive number
             if (dimension.matches("\\d+(\\.\\d+)?") && Float.parseFloat(dimension) > 0) {
                 return dimension;  // Return valid dimension
             } else {
-                System.out.println("Invalid dimension. Please enter a positive number.");
-            }
+                System.out.println(ColorUtil.RED + "Invalid dimension. Please enter a positive number." + ColorUtil.RESET);            }
         }
     }
 
     // Handle the invalid Package weight entered by Client or user. Validate Floating
-    private static float getValidatedFloatInput(Scanner sc, String fieldName) {
+    public static float getValidatedFloatInput(Scanner sc, String fieldName) {
         while (true) {
-            System.out.printf("Enter %s: ", fieldName);
-            try {
+            System.out.printf(ColorUtil.GREEN + "Enter %s: " + ColorUtil.RESET, fieldName);            try {
                 return sc.nextFloat();  // Return valid float input
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
+                System.out.println(ColorUtil.RED+"Invalid input. Please enter a valid number."+ColorUtil.RESET);
                 sc.next();  // Clear the invalid input from scanner buffer
             }
         }
@@ -155,15 +150,14 @@ public class AddNewPackage {
     private static String getValidatedEmail(Scanner sc, String entityType) {
         String email;
         while (true) {
-            System.out.printf("%s Email ID: ", entityType);
+            System.out.printf("%s" + ColorUtil.GREEN + " Email ID: " + ColorUtil.RESET, entityType);
             email = sc.nextLine();
 
             // Validate phone number length and digits
             if (email.contains(".com") && email.contains("@")) {
                 return email;  // Return valid phone number
             } else {
-                System.out.println("Invalid email. Please enter a valid email with '.com'.");
-            }
+                System.out.println(ColorUtil.RED + "Invalid email. Please enter a valid email with '.com'." + ColorUtil.RESET);            }
         }
     }
 
@@ -171,16 +165,15 @@ public class AddNewPackage {
     private static String getValidatedPhoneNumber(Scanner sc, String entityType) {
         String phoneNumber;
         while (true) {
-            System.out.printf("%s Contact Info:\n", entityType);
-            System.out.println("Phone Number (10 digits): ");
+            System.out.printf("%s" + ColorUtil.GREEN + " Contact Info:\n" + ColorUtil.RESET, entityType);
+            System.out.println(ColorUtil.GREEN + "Phone Number (10 digits): " + ColorUtil.RESET);
             phoneNumber = sc.nextLine();
 
             // Validate phone number length and digits
             if (phoneNumber.matches("\\d{10}")) {
                 return phoneNumber;  // Return valid phone number
             } else {
-                System.out.println("Invalid phone number. Please enter exactly 10 digits.");
-            }
+                System.out.println(ColorUtil.RED + "Invalid phone number. Please enter exactly 10 digits." + ColorUtil.RESET);            }
         }
     }
 
@@ -199,11 +192,11 @@ public class AddNewPackage {
             int rowsInsertedSenAndRec = preSt.executeUpdate();
 
             if (rowsInsertedSenAndRec > 0) {
-                System.out.printf("%s Added successfully.\n", entityType);
-            }
+                System.out.printf(ColorUtil.GREEN + "%s added successfully.\n" + ColorUtil.RESET, entityType);            }
         }
         catch (Exception e){
-            System.out.println("Please, check you details.");
+            System.out.println(ColorUtil.RED + "Error: Unable to insert " + entityType + " data. Please check your details." + ColorUtil.RESET);
+            throw e;
         }
     }
 
@@ -220,14 +213,14 @@ public class AddNewPackage {
                 String phone = rs.getString(entityType + "_Phone_No");
                 String email = rs.getString(entityType + "_Email_Id");
 
-                System.out.printf("""
+                System.out.printf(ColorUtil.CYAN+"""
                 # %s Information:
                 1. %s Name: %s
                 2. %s Address: %s
                 3. %s Contact Info:
                       3.1 Phone Number: %s
                       3.2 Email ID: %s
-                """, entityType, entityType, name, entityType, address, entityType, phone, email);
+                """+ColorUtil.RESET, entityType, entityType, name, entityType, address, entityType, phone, email);
             }
         }
     }
@@ -252,8 +245,7 @@ public class AddNewPackage {
 
             int rowInsertPackage = preparedStatement.executeUpdate();
             if (rowInsertPackage > 0) {
-                System.out.println("Package details added successfully with Package_ID: " + senderId + "!\n");
-            }
+                System.out.println(ColorUtil.GREEN + "Package details added successfully with Package_ID: " + senderId + "!\n" + ColorUtil.RESET);            }
         }
     }
 
@@ -276,7 +268,7 @@ public class AddNewPackage {
                 String destinationLocation = rs.getString("Destination_Location");
                 String expectedDate = rs.getString("Expected_Delivery_Date");
 
-                System.out.printf("""
+                System.out.printf(ColorUtil.CYAN+"""
                         # Package Information:
                         1. Package ID: %s
                         2. Sender ID: %s
@@ -288,11 +280,10 @@ public class AddNewPackage {
                         8. Origin Location: %s
                         9. Destination Location: %s
                         10. Expected Delivery Date: %s
-                        """, packageId, senderId, receiverId, packageWeight, packageDimensions, packageDesc, deliveryType, originLocation, destinationLocation, expectedDate);
+                        """+ColorUtil.RESET, packageId, senderId, receiverId, packageWeight, packageDimensions, packageDesc, deliveryType, originLocation, destinationLocation, expectedDate);
 
 
-                System.out.println("Please, NOTE down your Package ID: "+packageId);
-            }
+                System.out.println(ColorUtil.RED + "Please NOTE down your Package ID: " + ColorUtil.RESET + ColorUtil.GREEN + packageId + ColorUtil.RESET);            }
         }
     }
 
@@ -312,7 +303,7 @@ public class AddNewPackage {
             Date parsedDate = inputFormat.parse(date);  // Parse the input date
             return outputFormat.format(parsedDate);  // Format to MySQL compatible date
         } catch (ParseException e) {
-            throw new RuntimeException("Invalid date format. Please use DD/MM/YYYY.", e);
+            throw new RuntimeException(ColorUtil.RED+"Invalid date format. Please use DD/MM/YYYY."+ColorUtil.RESET, e);
         }
     }
 

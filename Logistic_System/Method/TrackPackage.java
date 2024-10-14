@@ -7,7 +7,7 @@ public class TrackPackage {
     public static void trackPackage() throws SQLException {
         Scanner sc = new Scanner(System.in);
         Connection con = ConnectionMySql.getConnection();
-        System.out.print("Enter the Package ID: ");
+        System.out.print(ColorUtil.GREEN+"Enter the Package ID: "+ColorUtil.RESET);
         String packageId = sc.nextLine();
         fetchTrackPackage(con,packageId);
     }
@@ -29,11 +29,11 @@ public class TrackPackage {
             String currentLocation = rs.getString("Current_Location");
             Date expectedDeliveryDate = rs.getDate("Expected_Delivery_Date");
 
-            System.out.printf(""" 
+            System.out.printf(ColorUtil.CYAN+""" 
                            # Package ID: %s
                            # Current Status: %s
                            # Current Location: %s
-                           # Expected Delivery Date: %s%n""",
+                           # Expected Delivery Date: %s%n"""+ColorUtil.RESET,
                     packageId, currentStatus, currentLocation, expectedDeliveryDate);
         }
     }
